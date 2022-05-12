@@ -1,0 +1,24 @@
+{
+    "stores": [
+        {
+            "position": {"lat": 39.5, "lng": -104.8},
+            "id": "1323FROM DB"
+        },
+        {
+            "position":{"lat": 39.7, "lng": -104.7},
+            "id": "132123asdf"
+        },
+        {
+            "position":{"lat": 38.2, "lng": -104.3},
+            "id": "13562sadsadf3"
+        },
+        {
+            "position":{"lat": 39.1, "lng": -104.3},
+            "id": "4th 13562sadsadf3"
+        },
+        {
+            "position":{"lat": 39.2, "lng": -104.3},
+            "id": "5th 13562sadsadf3"
+        }
+    ]
+}

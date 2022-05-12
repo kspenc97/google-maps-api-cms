@@ -1,0 +1,2 @@
+export const UPDATE_STORES = 'UPDATE_STORES';
+export const CREATE_STORE = 'CREATE_STORE';
