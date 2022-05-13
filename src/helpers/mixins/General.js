@@ -27,19 +27,19 @@ export default{
             let allProfits = importedStore.profitList.map((loggedProfit)=>{
                 return parseInt(loggedProfit.visitProfit);
             });
-            let median = this.$_genMedian(allProfits);
-            let min = this.$_genMin(allProfits);
+            let median = this.$_genMedian(allProfits).toLocaleString('en');
+            let min = this.$_genMin(allProfits).toLocaleString('en');
             let max = this.$_genMax(allProfits);
             let average = this.$_genAverage(allProfits).toFixed(2);
+            let averageFormatted = parseFloat(average).toLocaleString('en');
             let packedData = {
                 profitMedian: `$ ${median}`,
                 profitMin: `$ ${min}`,
                 profitMax: `$ ${max}`,
-                profitAverage: `$ ${average}`,
-                cleanAverage: average,
-                profitRange: `${min} - ${max}`
+                profitAverage: `$ ${averageFormatted}`,
+                cleanAverage: averageFormatted,
+                profitRange: `$${min} to $${max}`
             }
-            console.log(packedData);
             return packedData;
         },
         $_genAverage(insertedArr){
@@ -51,7 +51,7 @@ export default{
         },
         $_genMax(insertedArr){
             let sortedArr = insertedArr.sort(function(a, b){return a-b});
-            let maxVal = sortedArr[(sortedArr.length -1)]
+            let maxVal = parseFloat(sortedArr[(sortedArr.length -1)]).toLocaleString('en');
             return maxVal;
         },
         $_genMedian(insertedArr){

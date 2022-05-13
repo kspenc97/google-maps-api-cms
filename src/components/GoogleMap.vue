@@ -330,7 +330,9 @@ export default {
         this.$_postStore(marker);
         this.markerTemp.push(marker);
         this.createStoreLocal();
-        this.$emit('refreshList');
+        this.$nextTick(()=>{
+                  this.$emit('refreshList');
+        });
 
 
     },

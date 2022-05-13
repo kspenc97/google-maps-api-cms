@@ -32,7 +32,8 @@
     <div class="edit-window-conditional">
       <EditWindow
             @closeEditWindow="this.closeEditWindow"
-            @refreshAfterRemove="this.refreshAfterRemove" 
+            @refreshAfterRemove="this.refreshAfterRemove"
+            @refreshList="this.masterListRefresh" 
             :id2Edit="this.injectedId"
             :key="this.injectedId"
           />
@@ -121,7 +122,7 @@ methods:{
     async storeGet(){
       return await this.$_getStores();
     },
-    async masterListRefresh(){
+    masterListRefresh(){
           setTimeout(()=>{
             this.storeGet().then((res) =>{
                     this.$nextTick(()=>{

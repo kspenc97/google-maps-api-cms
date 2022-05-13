@@ -18,12 +18,15 @@
                 <div class="store-list-div">
                 <div class="store-group-div" v-for="storeGroup in this.displayedStores" :key="storeGroup.setMarkerClass">
                  <div v-if="storeGroup.stores.length > 0"> <!-- THIS DIV CHECKS IF THERE ARE STORES THAT FIT THE GIVEN CRITERIA -->
+                <div class='list-marker-row'>
                 <div :class="storeGroup.setMarkerClass"></div>
+                </div>
                 <div class="store-row-div">
                 <!--  -->    
                 <div  class='store-list-inner-div' v-for="store in storeGroup.stores" v-bind:key="store.id">
                    <p @click="launchModal" class='store-address'>{{store.storeAddress}}</p>
                     <p class="store-title">{{store.storeName}}</p> <!-- Sends ID of clicked store into function -->
+                    <p class='list-window-profit-metric'>{{returnProfitMetric(store)}}</p>
                     <hr class="between-notes-hr">
 
                     <div class="list-notes-column"> 
@@ -75,7 +78,7 @@ export default {
         statusList: ['redPin', 'yellowPin', 'greenPin'],
         showModal: false,
         listMode: 'STATUS_SORT',
-        topStatus: 'greenPin',
+        topStatus: 'redPin',
         topColor: 'bluePin',
       }
     },
@@ -85,6 +88,10 @@ export default {
     }),
       },
         methods:{
+            returnProfitMetric(storeObj){
+                let profitData = this.$_genProfitData(storeObj);
+                return profitData.profitAverage;
+            },
             async sortComp(){
                 switch(this.listMode){
                     case 'COLOR_SORT':
@@ -115,7 +122,6 @@ export default {
                             }
                             return packedSet;
                         });
-                        console.log(forDisplayed);
                     }
                     let sortColor = this.topColor
                         forDisplayed.sort(function(a,b){
@@ -182,7 +188,7 @@ export default {
             'storesGetter'
             ]),
         launchModal(){
-        this.showModal = true;
+            this.showModal = true;
         },
         editTrayRefresh(storeToEdit){
             this.$emit('editTraySignal', {idOfSelected: storeToEdit.storeId});
@@ -295,6 +301,14 @@ export default {
     -webkit-text-stroke-width: .04rem;
     -webkit-text-stroke-color: rgba(47, 47, 47, 0.33);
 }
+.list-window-profit-metric{
+            font-family: Mont2;
+            font-size: 28px;
+            letter-spacing: 1px;
+            color: aliceblue;
+            -webkit-box-shadow:  0px 0px 11px 5px rgba(83, 113, 145, 0.17); 
+            box-shadow:   0px 0px 11px 5px rgba(79, 109, 141, 0.17);
+    }
 .store-address{
     font-family: Mont;
     justify-content: center;
@@ -398,9 +412,35 @@ export default {
 .time-div-red{
     background-color: rgba(148, 1, 1, 0.45);
 }
- 
+.list-marker-row{
+        width: 100%;
+        justify-content: center;
+        display: flex;
+}
 
 
+
+/* Any Computer Screen */
+@media screen and (min-device-width: 821px){ 
+  
+}
+/* TABLETS */
+@media screen and (min-device-width: 481px) and (max-device-width: 820px) { 
+    
+}
+/* Phone Screens */
+@media only screen and (max-device-width: 480px) {
+    .list-switch-container{
+        width: 90%;
+        box-sizing: border-box;
+        box-shadow: inset 0px 0px 5px 3px rgba(32, 32, 32, 0.4);
+        border-radius: 55px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    
+}
 
 
 
@@ -409,51 +449,107 @@ export default {
  /* icon imports */
     .bluePin{
         background-image: url('../assets/map-icons/blue-pin.png');
-        height: 159px;
-        background-position: center;
+        height: 79px;
+        width: 79px;
         background-repeat: no-repeat;
-        width: 100%;
+        background-position: center;
+        align-self: center;
+        background-color: rgba(1, 46, 98, 0.21);
+        box-shadow: inset 0px 0px 17px 8px rgba(0, 0, 0, 0.17);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-top: 17px;
+        padding: 5.9px;
+        background-color: rgba(9, 41, 61, 0.25);
     }
     .greenPin{
         background-image: url('../assets/map-icons/green-pin.png');
-        height: 159px;
-        width: 100%;
+        height: 79px;
+        width: 79px;
         background-repeat: no-repeat;
         background-position: center;
+        align-self: center;
+        background-color: rgba(1, 46, 98, 0.21);
+        box-shadow: inset 0px 0px 17px 8px rgba(0, 0, 0, 0.17);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-top: 17px;
+        padding: 5.9px;
+        background-color: rgba(9, 41, 61, 0.25);
     }
     .greyPin{
         background-image: url('../assets/map-icons/grey-pin.png');
-        height: 159px;
-        width: 100%;
+        height: 79px;
+        width: 79px;
         background-repeat: no-repeat;
         background-position: center;
+        align-self: center;
+        background-color: rgba(1, 46, 98, 0.21);
+        box-shadow: inset 0px 0px 17px 8px rgba(0, 0, 0, 0.17);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-top: 17px;
+        padding: 5.9px;
+        background-color: rgba(9, 41, 61, 0.25);
     }
     .orangePin{
         background-image: url('../assets/map-icons/orange-pin.png');
-        height: 159px;
-        background-position: center;
+        height: 79px;
+        width: 79px;
         background-repeat: no-repeat;
-        width: 100%;
+        background-position: center;
+        align-self: center;
+        background-color: rgba(1, 46, 98, 0.21);
+        box-shadow: inset 0px 0px 17px 8px rgba(0, 0, 0, 0.17);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-top: 17px;
+        padding: 5.9px;
+        background-color: rgba(9, 41, 61, 0.25);
     }
     .purplePin{
         background-image: url('../assets/map-icons/purple-pin.png');
-        height: 159px;
-        width: 100%;
-        background-position: center;
+        height: 79px;
+        width: 79px;
         background-repeat: no-repeat;
+        background-position: center;
+        align-self: center;
+        background-color: rgba(1, 46, 98, 0.21);
+        box-shadow: inset 0px 0px 17px 8px rgba(0, 0, 0, 0.17);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-top: 17px;
+        padding: 5.9px;
+        background-color: rgba(9, 41, 61, 0.25);
     }
     .redPin{
         background-image: url('../assets/map-icons/red-pin.png');
-        height: 159px;
-        width: 100%;
+       height: 79px;
+        width: 79px;
         background-repeat: no-repeat;
         background-position: center;
+        align-self: center;
+        background-color: rgba(1, 46, 98, 0.21);
+        box-shadow: inset 0px 0px 17px 8px rgba(0, 0, 0, 0.17);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-top: 17px;
+        padding: 5.9px;
+        background-color: rgba(9, 41, 61, 0.25);
     }
     .yellowPin{
         background-image: url('../assets/map-icons/yellow-pin.png');
-        height: 159px;
-        width: 100%;
+        height: 79px;
+        width: 79px;
         background-repeat: no-repeat;
         background-position: center;
+        align-self: center;
+        background-color: rgba(1, 46, 98, 0.21);
+        box-shadow: inset 0px 0px 17px 8px rgba(0, 0, 0, 0.17);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-top: 17px;
+        padding: 5.9px;
+        background-color: rgba(9, 41, 61, 0.25);
     }
 </style>

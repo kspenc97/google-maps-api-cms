@@ -4,7 +4,7 @@
 
       <div class='list-settings-tray'>
         <!--  -->
-        <div v-if="orderSwitch === 'color' ">
+        <div v-if="orderSwitchVal=== 'color' ">
         <div class='list-settings-box'>
         <p class="select-list-label">Top Color</p>
             <select 
@@ -23,7 +23,7 @@
            </div>
         </div>
         <!--  -->
-        <div v-if="orderSwitch === 'stoplight' ">
+        <div v-if="orderSwitchVal === 'stoplight' ">
           <div class='list-settings-box'>
             <p class="select-list-label">Top Status</p>
                 <select 
@@ -37,8 +37,6 @@
                   </select>
             </div>
         </div>
-
-
 
 
               <div class='list-settings-box'>
@@ -79,15 +77,26 @@ methods:{
       let splitArr = event.target.value.split(" ");
         switch(splitArr[0]){
           case 'mode':
+            this.calcSecondarySelect(splitArr[1]);
             this.$emit('sorterChange', { mode: splitArr[1]});
           break;
           case 'color':
-            this.$emit('sorterChange', { color: splitArr[1]});
+              this.$emit('sorterChange', { color: splitArr[1]});
           break;
           case 'status':
             this.$emit('sorterChange', { status: splitArr[1]});
           break;
         }
+    },
+    calcSecondarySelect(calc){
+      switch(calc){
+        case 'STATUS_SORT':
+            this.orderSwitchVal = 'stoplight';
+        break;
+        case 'COLOR_SORT':
+            this.orderSwitchVal = 'color';
+        break;
+      }
     },
      stoplightSwitchClick(){
       if(this.stoplightSwitch === false){
@@ -134,7 +143,7 @@ methods:{
   width: 100%;
 }
 .list-settings-box{
-  width: 170px;
+  width: 280px;
 }
 
 
@@ -245,7 +254,9 @@ methods:{
 }
 /* Phone Screens */
 @media only screen and (max-device-width: 480px) {
-  
+  .list-settings-box{
+    width: 159px;
+  }
 
 }
 </style>

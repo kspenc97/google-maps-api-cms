@@ -122,7 +122,7 @@
                         <option value="DISPLAY_MAX">Max</option>
                         <option value="DISPLAY_MIN">Min</option>
                     </select>
-                   <p>{{this.profitMetric}}</p>
+                   <p class="edit-window-profit-metric">{{this.profitMetric}}</p>
                    <button class='add-profit-btn' @click.prevent="profitAdd">Add Profit</button>
               </div>
               <div class='edit-window-only-profit-rows' >
@@ -181,7 +181,7 @@
                         <option value="DISPLAY_MAX">Max</option>
                         <option value="DISPLAY_MIN">Min</option>
                     </select>
-                   <p>{{this.profitMetric}}</p>
+                   <p class='edit-window-profit-metric'>{{this.profitMetric}}</p>
                    <button class='add-profit-btn' @click.prevent="profitAdd">Add Profit</button>
               </div>
               <div class='edit-window-only-profit-rows' >
@@ -322,7 +322,7 @@
           <div class='edit-window-profits-column' >
               <div class="edit-window-profits-controls">
                    <button class='add-profit-btn' @click.prevent="profitAdd">Add Profit</button>
-                   <p>{{this.profitMetric}}</p>
+                   <p class='edit-window-profit-metric'>{{this.profitMetric}}</p>
                    <select 
                   class='profit-list-switch' 
                   @change.prevent="profitChange($event)" 
@@ -393,7 +393,7 @@
           <div :class='this.phoneProfitColumn' >
               <div class="edit-window-profits-controls">
                    <button class='add-profit-btn' @click.prevent="profitAdd">Add Profit</button>
-                   <p>{{this.profitMetric}}</p>
+                   <p class='edit-window-profit-metric'>{{this.profitMetric}}</p>
                    <select 
                   class='profit-list-switch' 
                   @change.prevent="profitChange($event)" 
@@ -463,6 +463,7 @@ import storesDb from '../helpers/mixins/storesDb';
 import General from '../helpers/mixins/General';
 import { v4 as uuidv4 } from 'uuid';
 import EditModal from '../components/EditModal.vue';
+import axios from 'axios';
 
 export default {
     name: 'EditWindow',
@@ -486,7 +487,9 @@ export default {
           modalQuestion: '',
           noteChoppingBlock: '',
           profitChoppingBlock: '',
+          addressChoppingBlock: '',
           profitMetric: '',
+          displayedProfitMetric: 'DISPLAY_AVERAGE',
           phoneProfitColumn: 'edit-window-profits-column-phone',
           phoneNoteColumn: 'edit-window-notes-column-phone'
           }
@@ -494,9 +497,14 @@ export default {
     watch:{
         selectedStore: {
             handler(){
-                this.executeUpdate();
-                this.refreshClock();
-                this.refreshDaysCount();
+                let interval = setInterval(()=>{
+                    clearInterval(interval);
+                    this.executeUpdate();
+                    this.refreshClock();
+                    this.refreshDaysCount();
+                    this.$emit('refreshList');
+                    this.profitRefresh();
+                }, 100);
             },
             deep: true
         }
@@ -533,6 +541,7 @@ export default {
                     break;
                 }
         },
+        
         loadPinImg(){
              let settingSwitch = this.selectedStore.markerColor;
                 switch(settingSwitch){
@@ -579,12 +588,35 @@ export default {
             this.profitMetric = profitData.profitMin;
           break;
         }
-
+    },
+    profitRefresh(){
+        let profitData = this.$_genProfitData(this.selectedStore);
+        switch(this.displayedProfitMetric){
+            case 'DISPLAY_AVERAGE':
+            this.profitMetric = profitData.profitAverage;
+          break;
+          case 'DISPLAY_MEDIAN':
+            this.profitMetric = profitData.profitMedian
+          break;
+          case 'DISPLAY_RANGE':
+            this.profitMetric = profitData.profitRange;
+          break;
+          case 'DISPLAY_MAX':
+            this.profitMetric = profitData.profitMax;
+          break;
+          case 'DISPLAY_MIN':
+            this.profitMetric = profitData.profitMin;
+          break;
+        }
+  
     },
     selectChange(event){
             this.selectedStore.markerColor = event.target.value;
             this.$_updateStore(this.selectedStore);
             this.loadPinImg();
+            this.$nextTick(()=>{
+            this.$emit('refreshList');
+            });
         },
     openModal(e){
             this.showModal = true;
@@ -630,9 +662,49 @@ export default {
     editAddress(){
         this.changeAddy = true;
     },
-    doneChangingAddress(){
+    async doneChangingAddress(){
+        let newAddressInfo = await this.getAddress();
+        console.log(newAddressInfo)
+        /* This is where the local selected store gets address and cords updated, after 100ms the watcher will update DB */
+        this.selectedStore.storeAddress = newAddressInfo.newAddress;
+        this.selectedStore.position.lat = newAddressInfo.newCoords.lat;
+        this.selectedStore.position.lng = newAddressInfo.newCoords.lng;
         this.changeAddy = false;
     },
+    async getAddress(){
+                const geocodeAPI = 'AIzaSyDZLn7MXGkeh2kmHcnREkLRbZPXsQ3d4aQ';
+                let address = await axios
+                .get(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.selectedStore.storeAddress}&key=${geocodeAPI}`);
+                /* Geocoding by store address the user just entered, taking the address string from the response, 
+                    while unessesary, ensures that we get a well formatted address    */
+               /*  */
+               /*  */
+                //Guards against entering a bad address, "ZERO_RESULTS" is the value returned from google's api if no resuls for geocode
+                if(address.data.status === 'ZERO_RESULTS'){
+                    let newAddress = this.addressChoppingBlock;
+                    let newLat = this.selectedStore.position.lat;
+                    let newLng = this.selectedStore.position.lng;
+                    let newPackedInfo = {
+                        newAddress: newAddress,
+                        newCoords: {
+                            lat: newLat,
+                            lng: newLng
+                            }
+                        }
+                        return newPackedInfo
+                    }
+                     else{
+                        let newAddress = address.data.results[0].formatted_address;
+                        this.addressChoppingBlock = address.data.results[0].formatted_address;
+                        let newCoords = address.data.results[0].geometry.location;
+                        let newPackedInfo = {
+                            newAddress: newAddress,
+                            newCoords: newCoords
+                        }
+                        return newPackedInfo;
+                }
+               
+            },
     closeEditWindow(){
             this.$emit('closeEditWindow');
         },
@@ -712,6 +784,7 @@ export default {
     },
     resetTimer(){
         console.log('ADD FUNCTIONALITY SOON!!!');
+
     },
     },
     
@@ -719,8 +792,13 @@ export default {
         this.selectedStore = this.storesData.find((store)=>{
             return store.storeId === this.id2Edit
         });
+        this.$nextTick(()=>{
+        this.addressChoppingBlock = this.selectedStore.storeAddress;
+        this.profitRefresh();
         this.refreshClock();
         this.loadPinImg();
+        });
+        
     },
     
 }
@@ -1184,8 +1262,11 @@ export default {
             border-style: none;
             color: rgb(255, 255, 255);
             background-color: rgba(12, 12, 12, 0.14);
-            border-radius: 28px;
-            padding: 12px;
+            border-radius: 111px;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 3px;
+            padding-bottom: 3px;
             width: 35%;
             font-size: 17px;
             /*  */
@@ -1375,13 +1456,24 @@ export default {
             justify-content: space-evenly;
             padding-bottom: 20px;
         }
+        .edit-window-profit-metric{
+            font-family: Mont2;
+            font-size: 28px;
+            letter-spacing: 1px;
+            color: aliceblue;
+            -webkit-box-shadow:  0px 0px 11px 5px rgba(83, 113, 145, 0.17); 
+            box-shadow:   0px 0px 11px 5px rgba(79, 109, 141, 0.17);
+        }
         .profit-list-switch{
             font-family: Mont2;
             border-style: none;
             color: rgb(255, 255, 255);
             background-color: rgba(12, 12, 12, 0.14);
-            border-radius: 28px;
-            padding: 12px;
+            border-radius: 111px;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 3px;
+            padding-bottom: 3px;
             width: 35%;
             font-size: 17px;
             /*  */
@@ -1482,10 +1574,6 @@ export default {
 
 /* Any Computer Screen */
 @media screen and (min-device-width: 821px){ 
-     
-   
-      
-
       @keyframes topBoxSlideIn {
         from{
           transform: translateX(-97%);
@@ -1496,12 +1584,9 @@ export default {
           filter: opacity(100%) blur(0px);
         }
       }
- 
-
 }
 /* TABLETS */
 @media screen and (min-device-width: 481px) and (max-device-width: 820px) { 
-     
           @keyframes topBoxSlideIn {
             from{
               transform: translateX(-97%);
@@ -1512,7 +1597,6 @@ export default {
               filter: opacity(100%) blur(0px);
             }
           }
-
 }
 /* Phone Screens */
 @media only screen and (max-device-width: 480px) {
@@ -1563,7 +1647,6 @@ export default {
     }
     .hand-btn-left:hover{
          background-color: rgba(0, 0, 0, 0.15);
-
     }
     .phone-size-hrs{
         display: inline;
@@ -1672,6 +1755,13 @@ export default {
         padding-bottom: 10px;
         padding-top: 10px;
     }
+    .edit-window-profit-metric{
+            font-size: 17px;
+            letter-spacing: 1px;
+            color: aliceblue;
+            -webkit-box-shadow:  0px 0px 11px 5px rgba(83, 113, 145, 0.17); 
+            box-shadow:   0px 0px 11px 5px rgba(79, 109, 141, 0.17);
+        }
     .edit-window-only-profit-rows{
         overflow-y: scroll;
     }
@@ -1729,9 +1819,6 @@ export default {
 
 
 
-
-
-
 /*  */
 /*  */
 /*  */
@@ -1743,6 +1830,12 @@ export default {
         width: 59px;
         background-repeat: no-repeat;
         background-position: center;
+        align-self: center;
+        box-shadow: inset 0px 0px 11px 3px rgba(0, 0, 0, 0.21);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-bottom: 3px;
+        padding: 11px;
     }
     .greenPin{
         background-image: url('../assets/map-icons/green-pin.png');
@@ -1750,6 +1843,12 @@ export default {
         width: 59px;
         background-repeat: no-repeat;
         background-position: center;
+        align-self: center;
+        box-shadow: inset 0px 0px 11px 3px rgba(0, 0, 0, 0.21);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-bottom: 3px;
+        padding: 11px;
     }
     .greyPin{
         background-image: url('../assets/map-icons/grey-pin.png');
@@ -1757,6 +1856,12 @@ export default {
         width: 59px;
         background-repeat: no-repeat;
         background-position: center;
+        align-self: center;
+        box-shadow: inset 0px 0px 11px 3px rgba(0, 0, 0, 0.21);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-bottom: 3px;
+        padding: 11px;
     }
     .orangePin{
         background-image: url('../assets/map-icons/orange-pin.png');
@@ -1764,6 +1869,12 @@ export default {
         width: 59px;
         background-repeat: no-repeat;
         background-position: center;
+        align-self: center;
+        box-shadow: inset 0px 0px 11px 3px rgba(0, 0, 0, 0.21);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-bottom: 3px;
+        padding: 11px;
     }
     .purplePin{
         background-image: url('../assets/map-icons/purple-pin.png');
@@ -1771,6 +1882,12 @@ export default {
         width: 59px;
         background-repeat: no-repeat;
         background-position: center;
+        align-self: center;
+        box-shadow: inset 0px 0px 11px 3px rgba(0, 0, 0, 0.21);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-bottom: 3px;
+        padding: 11px;
     }
     .redPin{
         background-image: url('../assets/map-icons/red-pin.png');
@@ -1778,6 +1895,12 @@ export default {
         width: 59px;
         background-repeat: no-repeat;
         background-position: center;
+        align-self: center;
+        box-shadow: inset 0px 0px 11px 3px rgba(0, 0, 0, 0.21);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-bottom: 3px;
+        padding: 11px;
     }
     .yellowPin{
         background-image: url('../assets/map-icons/yellow-pin.png');
@@ -1785,5 +1908,12 @@ export default {
         width: 59px;
         background-repeat: no-repeat;
         background-position: center;
+
+        align-self: center;
+        box-shadow: inset 0px 0px 11px 3px rgba(0, 0, 0, 0.21);
+        border-radius: 11px;
+        backdrop-filter: blur(4px);
+        margin-bottom: 3px;
+        padding: 11px;
     }
 </style>
