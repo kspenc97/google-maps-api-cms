@@ -95,7 +95,79 @@
         <hr class='phone-size-hrs'/>
         <div class='bottom-column-edit-window'>
         <div class='notes-and-profit'>
+        
+        <!-- PHONE BOX START -->
+    <div class='edit-window-phone-box-bottom' >
+        <div class="edit-window-phone-box-controls">
+            <select 
+                  class='phone-box-controls' 
+                  @change.prevent="phoneEditModeChange($event)" 
+                        >
+                        <option value="placeholder" disabled>Select an option</option>
+                        <option value="PHONE_BOX_DISPLAY_PROFITS" selected>Display Profits List</option>
+                        <option value="PHONE_BOX_DISPLAY_NOTES">Display Notes List</option>
+            </select>
+        </div>
             <!-- 1 -->
+          <div :class='this.phoneProfitColumn' >
+              <div class="edit-window-profits-controls">
+                  <select 
+                  class='profit-list-switch' 
+                  @change.prevent="profitChange($event)" 
+                        >
+                        <option value="placeholder" disabled>Select an option</option>
+                        <option value="DISPLAY_AVERAGE" selected>Average</option>
+                        <option value="DISPLAY_MEDIAN">Median</option>
+                        <option value="DISPLAY_RANGE">Range</option>
+                        <option value="DISPLAY_MAX">Max</option>
+                        <option value="DISPLAY_MIN">Min</option>
+                    </select>
+                   <p>{{this.profitMetric}}</p>
+                   <button class='add-profit-btn' @click.prevent="profitAdd">Add Profit</button>
+              </div>
+              <div class='edit-window-only-profit-rows' >
+                <div v-for="profit in selectedStore.profitList" :key="profit.visitId">
+                    <div class='profit-window-row'>
+                    <input class='profit-input-right' name="profit-right" type="number" v-model="profit.visitProfit" /> |
+                    <input class='profit-input-left' name="profit-left" type="text" v-model="profit.visitDate" /> |
+                    <button class='profit-remove-button' @click.prevent="profitRemoveStart(profit.visitId)">x</button>
+                    </div>
+                </div>
+               </div>
+
+            </div>
+            <!-- 2 -->
+            <div :class='this.phoneNoteColumn' >
+                <div class="edit-window-notes-controls">
+                <select 
+                  class='notes-switch' 
+                  @change.prevent="notesChange($event)" 
+                >
+                        <option value="placeholder" disabled>Select an option</option>
+                        <option value="NEWEST_FIRST" selected>Newest Notes</option>
+                        <option value="OLDEST_FIRST">Oldest Notes</option>
+                    </select>
+                <button class="add-note-btn" @click.prevent="noteAdd">Add Note</button>
+                   
+              </div>
+              <div class='edit-window-only-note-rows' >
+                <div v-for="note in selectedStore.storeNotes" :key="note.noteId">
+                    <div class='edit-window-note-row'>
+                    <input class='note-input-right' name="store-note-right" type="text" v-model="note.noteRight" />
+                    <input class='note-input-middle' name="store-note-middle" type="text" v-model="note.noteMiddle" />
+                    <input class='note-input-left' name="store-note-left" type="text" v-model="note.noteLeft" />
+                    <button class='note-remove-button' @click.prevent="noteRemoveStart(note.noteId)">x</button>
+                    </div>
+                </div>
+               </div>
+            </div>
+            
+            <!-- 3 -->
+       </div>
+        <!-- PHONE BOX END -->
+        <!-- COMPUTER BOX START -->
+        <div class='edit-window-computer-tablet-box-bottom'>
+        <!-- 1 -->
           <div class='edit-window-profits-column' >
               <div class="edit-window-profits-controls">
                   <select 
@@ -148,8 +220,8 @@
                 </div>
                </div>
             </div>
-            
             <!-- 3 -->
+        </div><!-- EDIT WINDOW COMPUTER BOX END -->
         </div>
 
 <!-- LEFT ENDDDDDD -->
@@ -242,7 +314,9 @@
      
       </div>
          <hr class='phone-size-hrs'/>
-        <div class='bottom-column-edit-window'>
+
+<div class='edit-window-computer-tablet-box-bottom'><!-- COMPUTER BOX START -->
+    <div class='bottom-column-edit-window'>
         <div class='notes-and-profit'>
             <!-- 1 -->
           <div class='edit-window-profits-column' >
@@ -296,12 +370,87 @@
                 </div>
                </div>
             </div>
-            
             <!-- 3 -->
         </div>
+    </div>
+</div><!-- COMPUTER BOX END -->
+        
+
+    <!-- PHONE BOX START -->
+    <div class='edit-window-phone-box-bottom' >
+        <div class="edit-window-phone-box-controls">
+            <select 
+                  class='phone-box-controls' 
+                  @change.prevent="phoneEditModeChange($event)" 
+                        >
+                        <option value="placeholder" disabled>Select an option</option>
+                        <option value="PHONE_BOX_DISPLAY_PROFITS" selected>Display Profits List</option>
+                        <option value="PHONE_BOX_DISPLAY_NOTES">Display Notes List</option>
+            </select>
+        </div>
+        <div class='notes-and-profit'>
+        <!-- 1 -->
+          <div :class='this.phoneProfitColumn' >
+              <div class="edit-window-profits-controls">
+                   <button class='add-profit-btn' @click.prevent="profitAdd">Add Profit</button>
+                   <p>{{this.profitMetric}}</p>
+                   <select 
+                  class='profit-list-switch' 
+                  @change.prevent="profitChange($event)" 
+                >
+                        <option value="placeholder" disabled>Select an option</option>
+                        <option value="DISPLAY_AVERAGE" selected>Average</option>
+                        <option value="DISPLAY_MEDIAN">Median</option>
+                        <option value="DISPLAY_RANGE">Range</option>
+                        <option value="DISPLAY_MAX">Max</option>
+                        <option value="DISPLAY_MIN">Min</option>
+                    </select>
+              </div>
+              <div class='edit-window-only-profit-rows' >
+                <div v-for="profit in selectedStore.profitList" :key="profit.visitId">
+                    <div class='profit-window-row'>
+                    <button class='profit-remove-button' @click.prevent="profitRemoveStart(profit.visitId)">x</button> |
+                    <input class='profit-input-left' name="profit-left" type="text" v-model="profit.visitDate" /> | 
+                    <input class='profit-input-right' name="profit-right" type="number" v-model="profit.visitProfit" />
+                    </div>
+                </div>
+               </div>
+
+            </div>
+            <!-- 2 -->
+            <div :class='this.phoneNoteColumn' >
+                <div class="edit-window-notes-controls">
+                <button class="add-note-btn" @click.prevent="noteAdd">Add Note</button>
+                   <select 
+                  class='notes-switch' 
+                  @change.prevent="notesChange($event)" 
+                >
+                        <option value="placeholder" disabled>Select an option</option>
+                        <option value="NEWEST_FIRST" selected>Newest Notes</option>
+                        <option value="OLDEST_FIRST">Oldest Notes</option>
+                    </select>
+              </div>
+              <div class='edit-window-only-note-rows' >
+                <div v-for="note in selectedStore.storeNotes" :key="note.noteId">
+                    <div class='edit-window-note-row'>
+                    <button class='note-remove-button' @click.prevent="noteRemoveStart(note.noteId)">x</button>
+                    <input class='note-input-left' name="store-note-left" type="text" v-model="note.noteLeft" />
+                    <input class='note-input-middle' name="store-note-middle" type="text" v-model="note.noteMiddle" /> 
+                    <input class='note-input-right' name="store-note-right" type="text" v-model="note.noteRight" />
+                    </div>
+                </div>
+               </div>
+            </div>
+            <!-- 3 -->
+        </div>
+    </div>
+    <!-- PHONE BOX END -->
+
+
 
 <!--  -->
-        </div>
+<!--  -->
+<!--  -->
   </div>
 
 
@@ -338,6 +487,8 @@ export default {
           noteChoppingBlock: '',
           profitChoppingBlock: '',
           profitMetric: '',
+          phoneProfitColumn: 'edit-window-profits-column-phone',
+          phoneNoteColumn: 'edit-window-notes-column-phone'
           }
     },
     watch:{
@@ -368,6 +519,19 @@ export default {
             if(this.handMode === true){
                 this.handMode = false;
             }
+        },
+        phoneEditModeChange(event){
+            let phoneBoxMode = event.target.value;
+                switch(phoneBoxMode){
+                    case 'PHONE_BOX_DISPLAY_PROFITS':
+                        this.phoneNoteColumn= 'edit-window-notes-column-phone-hide';
+                        this.phoneProfitColumn= 'edit-window-profits-column-phone';
+                    break;
+                    case 'PHONE_BOX_DISPLAY_NOTES':
+                        this.phoneProfitColumn= 'edit-window-profits-column-phone-hide';
+                        this.phoneNoteColumn= 'edit-window-notes-column-phone';
+                    break;
+                }
         },
         loadPinImg(){
              let settingSwitch = this.selectedStore.markerColor;
@@ -573,7 +737,7 @@ export default {
         padding-top: 15px;
         margin-bottom: 10px;
         padding-bottom: 5px;
-        backdrop-filter: blur(4px);
+        backdrop-filter: blur(7px) contrast(1.2) saturate(.2);
         background-color: rgba(11, 21, 25, 0.7);
         display: flex;
         left: 0;
@@ -958,7 +1122,7 @@ export default {
             box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.59); 
             }
             .icon-selector:hover{
-            color: rgb(177, 221, 255);
+            color: rgb(15, 23, 28);
             background-color: rgba(12, 12, 12, 0.21);
             -webkit-box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.7); 
             box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.7); 
@@ -967,11 +1131,19 @@ export default {
         .pin-edit-hr{
             width: 75px;
         }
-
+        .edit-window-phone-box-controls{
+            padding-bottom: 10px;
+        }
         .bottom-column-edit-window{
                 display: flex;
                 flex-direction: column;
                 width: 90%;
+            }
+        .edit-window-computer-tablet-box-bottom{
+            display: block;
+            }
+        .edit-window-phone-box-bottom{
+            display: none;
             }
         .edit-window-notes-column{
             width: 100%;
@@ -984,6 +1156,28 @@ export default {
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
+        }
+        .phone-box-controls{
+            font-family: Mont;
+            border-style: none;
+            color: rgb(255, 255, 255);
+            background-color: rgba(12, 12, 12, 0.14);
+            border-radius: 28px;
+            padding-left: 12px;
+            padding-right: 12px;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            width: 80%;
+            font-size: 17px;
+            /*  */
+            -webkit-box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.59); 
+            box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.59); 
+        }
+        .phone-box-controls:hover{
+            color: rgb(13, 24, 24);
+            background-color: rgba(12, 12, 12, 0.21);
+            -webkit-box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.7); 
+            box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.7); 
         }
         .notes-switch{
             font-family: Mont2;
@@ -999,7 +1193,7 @@ export default {
             box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.59); 
             }
         .notes-switch:hover{
-            color: rgb(177, 221, 255);
+            color: rgb(20, 34, 48);
             background-color: rgba(12, 12, 12, 0.21);
             -webkit-box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.7); 
             box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.7); 
@@ -1044,7 +1238,7 @@ export default {
 
         }
         .note-remove-button{
-            background-color: rgba(233, 173, 34, 0.2);
+            background-color: rgba(41, 41, 41, 0.2);
             box-shadow: inset 0px 0px 4.9px 1px rgba(0, 0, 0, 0.7);
             border-style: none;
             font-family: Mont2;
@@ -1062,7 +1256,7 @@ export default {
             padding: 25px;
             color: #fff;
             -webkit-text-stroke-width: .04rem;
-            -webkit-text-stroke-color: rgba(67, 172, 180, 0.33);
+            -webkit-text-stroke-color: rgba(160, 218, 222, 0.59);
         }
         .note-remove-button:hover{
                 background-color: rgba(176, 24, 24, 0.27);
@@ -1142,7 +1336,7 @@ export default {
             box-shadow: 0 0 12px #719ECE;
         }
         .profit-remove-button{
-            background-color: rgba(233, 173, 34, 0.2);
+            background-color: rgba(41, 41, 41, 0.2);
             box-shadow: inset 0px 0px 4.9px 1px rgba(0, 0, 0, 0.7);
             border-style: none;
             font-family: Mont2;
@@ -1160,7 +1354,7 @@ export default {
             padding: 25px;
             color: #fff;
             -webkit-text-stroke-width: .04rem;
-            -webkit-text-stroke-color: rgba(67, 172, 180, 0.33);
+            -webkit-text-stroke-color: rgba(179, 214, 216, 0.59);
         }
     .profit-remove-button:hover{
             background-color: rgba(176, 24, 24, 0.27);
@@ -1195,7 +1389,7 @@ export default {
             box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.59); 
             }
         .profit-list-switch:hover{
-            color: rgb(177, 221, 255);
+            color: rgb(20, 32, 42);
             background-color: rgba(12, 12, 12, 0.21);
             -webkit-box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.7); 
             box-shadow: inset 0px 0px 7px 3px rgba(9, 30, 53, 0.7); 
@@ -1330,15 +1524,25 @@ export default {
         justify-content: space-between;
     }
     .hand-btn-right{
-        padding-left: 14.5px;
-        padding-right: 14.5px;
+        padding-left: 10px;
+        padding-right: 10px;
         padding-bottom: 25px;
         padding-top: 25px;
         border-radius: 28px;
         border-style: none;
         position: fixed;
         /*  */
-        transform: translateY(-74px) translateX(302%);
+        transform: translateY(-74px) translateX(300%);
+         background-color: rgba(31, 146, 228, 0.15);
+        box-shadow: inset 0px 0px 5.9px 1px rgba(0, 0, 0, 0.7);
+        font-family: Mont2;
+        /*  */
+        color: #fff;
+        -webkit-text-stroke-width: .04rem;
+        -webkit-text-stroke-color: rgba(47, 47, 47, 0.33);  
+    }
+    .hand-btn-right:hover{
+         background-color: rgba(0, 0, 0, 0.15);
     }
     .hand-btn-left{
         padding-left: 17px;
@@ -1346,10 +1550,20 @@ export default {
         padding-bottom: 25px;
         padding-top: 25px;
         border-radius: 28px;
+        background-color: rgba(31, 146, 228, 0.15);
+        box-shadow: inset 0px 0px 5.9px 1px rgba(0, 0, 0, 0.7);
         border-style: none;
+        font-family: Mont2;
         position: fixed;
         /*  */
         transform: translateY(-74px) translateX(3%);
+        color: #fff;
+        -webkit-text-stroke-width: .04rem;
+        -webkit-text-stroke-color: rgba(47, 47, 47, 0.33);
+    }
+    .hand-btn-left:hover{
+         background-color: rgba(0, 0, 0, 0.15);
+
     }
     .phone-size-hrs{
         display: inline;
@@ -1366,6 +1580,50 @@ export default {
     }
     .edit-window-pane{
         transform: translateY(0%);
+    }
+    .edit-window-computer-tablet-box-bottom{
+        display: none;
+    }
+    .edit-window-phone-box-bottom{
+        display: block;
+        height: 370px;
+    }
+    .edit-window-notes-column-phone{
+            display: flex;
+            box-sizing: border-box;
+            flex-direction: column;
+            justify-content: space-evenly;
+            height: 310px;
+            width: 100%;
+            overflow-y: scroll;
+            padding-bottom: 10px;
+            padding-right: 7px;
+            padding-top: 10px;
+            border-radius: 9px;
+            -webkit-box-shadow: inset 0px 0px 3px 3px rgb(17, 41, 54, .39);
+            -moz-box-shadow: inset 0px 0px 3px 3px rgb(17, 41, 54, .39);
+            box-shadow: inset 0px 0px 3px 3px rgb(17, 41, 54, .39);
+        }
+    .edit-window-notes-column-phone-hide{
+        display: none;
+    }
+    .edit-window-profits-column-phone{
+            display: flex;
+            box-sizing: border-box;
+            flex-direction: column;
+            justify-content: space-evenly;
+            height: 320px;
+            width: 100%;
+            overflow-y: scroll;
+            padding-right: 7px;
+            padding-bottom: 10px;
+            border-radius: 9px;
+            -webkit-box-shadow: 0px 0px 3px 3px rgb(17, 41, 54, .39);
+            -moz-box-shadow: 0px 0px 3px 3px rgb(17, 41, 54, .39);
+            box-shadow: 0px 0px 3px 3px rgb(17, 41, 54, .39); 
+        }
+    .edit-window-profits-column-phone-hide{
+            display: none;
     }
     .store-address-label{
         font-size: 12px;
@@ -1452,10 +1710,10 @@ export default {
         width: 34%;
     }
     .profit-input-right{
-        width: 30%;
+        width: 31%;
     }
     .profit-input-left{
-        width: 30%;
+        width: 31%;
     }
     .profit-remove-button{
         padding: 12px;
