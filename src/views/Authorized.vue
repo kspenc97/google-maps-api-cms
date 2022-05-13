@@ -91,7 +91,8 @@ methods:{
     /////////////////////
     if(this.storeView === false){
         this.storeListCont = 'store-list-container'
-        setTimeout(()=> {
+        let interval = setInterval(()=>{
+                    clearInterval(interval);
           mapCont.classList.add('hide');  
           storeListCont.classList.add('show');
           logOut.classList.add('hide');
@@ -103,7 +104,8 @@ methods:{
         storeListCont.classList.remove('show');
         logOut.classList.remove('hide');
         this.storeView=false;
-        setTimeout(() => {
+       let interval = setInterval(()=>{
+                    clearInterval(interval);
           this.storeListCont = 'store-list-container-completely-hide'
         }, 1111);
     } 
@@ -172,7 +174,7 @@ created(){
   background-image: url('../assets/images/bg-image-5.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
+  height: 100%;
   position: fixed;
   top: 0; left: 0; bottom: 0; right: 0;
   z-index: -10;
@@ -204,6 +206,7 @@ created(){
     width: 150px;
     height: 24px;
     padding: 15px;
+    transform: translateX(-3px);
     margin-bottom: 21px;
   }
   
@@ -313,7 +316,7 @@ created(){
     transition: transform 1s ease-in-out;
 }
 .store-list-container.show{
-    transform: translateX(7vw);
+    transform: translateX(4vw);
 }
 .store-list-container-completely-hide{
     top: calc(100vh - 77vh);
@@ -378,7 +381,18 @@ created(){
 }
 /* Phone Screens */
 @media only screen and (max-device-width: 480px) {
-    
-}
+    .store-list-container.show{
+    transform: translateX(3vw);
+    overflow-y: scroll;
+    overflow-x: hidden;
+        }
+    .map-container{
+      transform: translateX(0.5vw);
+        }
+        .switch-hero{
+          
+          transform: translateX(-3px);
+        }
 
+}
 </style>

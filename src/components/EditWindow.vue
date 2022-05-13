@@ -504,7 +504,7 @@ export default {
                     this.refreshDaysCount();
                     this.$emit('refreshList');
                     this.profitRefresh();
-                }, 100);
+                }, 200);
             },
             deep: true
         }
@@ -783,8 +783,8 @@ export default {
         this.closeEditWindow();
     },
     resetTimer(){
-        console.log('ADD FUNCTIONALITY SOON!!!');
-
+        let newTime = Date.now();
+        this.selectedStore.lastVisited = newTime;
     },
     },
     
@@ -809,19 +809,20 @@ export default {
         display: none;
     }
     .edit-window-pane{
+        height: 45%;
         box-sizing: border-box;
         padding-left: 15px;
         padding-right: 15px;
         padding-top: 15px;
         margin-bottom: 10px;
-        padding-bottom: 5px;
+        padding-bottom: 14px;
         backdrop-filter: blur(7px) contrast(1.2) saturate(.2);
         background-color: rgba(11, 21, 25, 0.7);
         display: flex;
         left: 0;
         right: 0;
         bottom: 0;
-        transform: translateY(70%);
+        transform: translateY(48%) scale(1.004) translateX(-.5%);
         position: static;
         flex-direction: column;
         align-items: center;
@@ -1458,7 +1459,7 @@ export default {
         }
         .edit-window-profit-metric{
             font-family: Mont2;
-            font-size: 28px;
+            font-size: 17px;
             letter-spacing: 1px;
             color: aliceblue;
             -webkit-box-shadow:  0px 0px 11px 5px rgba(83, 113, 145, 0.17); 
@@ -1608,15 +1609,15 @@ export default {
         justify-content: space-between;
     }
     .hand-btn-right{
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: 7px;
+        padding-right: 7px;
         padding-bottom: 25px;
         padding-top: 25px;
         border-radius: 28px;
         border-style: none;
         position: fixed;
         /*  */
-        transform: translateY(-74px) translateX(300%);
+        transform: translateY(-78px) translateX(319%);
          background-color: rgba(31, 146, 228, 0.15);
         box-shadow: inset 0px 0px 5.9px 1px rgba(0, 0, 0, 0.7);
         font-family: Mont2;
@@ -1629,8 +1630,8 @@ export default {
          background-color: rgba(0, 0, 0, 0.15);
     }
     .hand-btn-left{
-        padding-left: 17px;
-        padding-right: 17px;
+        padding-left: 15px;
+        padding-right: 15px;
         padding-bottom: 25px;
         padding-top: 25px;
         border-radius: 28px;
@@ -1640,7 +1641,7 @@ export default {
         font-family: Mont2;
         position: fixed;
         /*  */
-        transform: translateY(-74px) translateX(3%);
+        transform: translateY(-78px) translateX(2%);
         color: #fff;
         -webkit-text-stroke-width: .04rem;
         -webkit-text-stroke-color: rgba(47, 47, 47, 0.33);
@@ -1661,8 +1662,38 @@ export default {
       .bottom-column-edit-window{
         width: 95%;
     }
+
+
+  /*    .edit-window-pane{
+        box-sizing: border-box;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 15px;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        backdrop-filter: blur(7px) contrast(1.2) saturate(.2);
+        background-color: rgba(11, 21, 25, 0.7);
+        display: flex;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: translateY(70%);
+        position: static;
+        flex-direction: column;
+        align-items: center;
+        justify-items: center;
+        overflow: hidden;
+    } */
+
+
     .edit-window-pane{
-        transform: translateY(0%);
+        transform: scaleX(1.02) translateY(-1%) translateX(-1.5%);
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 15px;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+        height: 89%;
     }
     .edit-window-computer-tablet-box-bottom{
         display: none;

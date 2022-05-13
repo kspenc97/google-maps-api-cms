@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app-biggest-div" id="app">
 <!--     use for admin panel later?
     <div id="nav">
       <router-link to="/">Home</router-link> |
@@ -12,7 +12,9 @@
 </template>
 
 <style>
-
+.app-biggest-div{
+  overflow: hidden;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

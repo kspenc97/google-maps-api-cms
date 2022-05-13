@@ -266,14 +266,13 @@ export default {
 }
 .store-list-inner-div{
     display: flex;
-    
+    box-sizing: border-box;
     width: 340px;
     height: 440px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     justify-content: space-evenly; 
-    margin: 5px;
     word-wrap: break-word;
     padding: 14px;
     margin: 17px;
@@ -295,16 +294,21 @@ export default {
     font-family: Mont2;
     letter-spacing: 2.7px;
     font-size: 21px;
-    margin: 3px;
-    padding: 15px;
+    margin: 2px;
+    height: 4%;
+    text-align: center;
+    padding: 2px;
     color: #fff;
     -webkit-text-stroke-width: .04rem;
     -webkit-text-stroke-color: rgba(47, 47, 47, 0.33);
 }
 .list-window-profit-metric{
             font-family: Mont2;
-            font-size: 28px;
-            letter-spacing: 1px;
+            font-size: 21px;
+            height: 2%;
+            z-index: 5;
+            letter-spacing: 2.5px;
+            
             color: aliceblue;
             -webkit-box-shadow:  0px 0px 11px 5px rgba(83, 113, 145, 0.17); 
             box-shadow:   0px 0px 11px 5px rgba(79, 109, 141, 0.17);
@@ -316,10 +320,11 @@ export default {
     align-items: center;
     font-weight: bolder;
     word-wrap: break-word;
-    padding: 5px;
+    height: 5%;
+    padding: 3px;
     letter-spacing: 1.7px;
     font-style: italic;
-    font-size: 17px;
+    font-size: 14px;
     border-radius: 12px;
     -webkit-box-shadow: 0px 0px 22px 5px rgba(9, 153, 255, 0.05);
     -moz-box-shadow: 0px 0px 22px 5px rgba(9, 153, 255, 0.05);
@@ -334,15 +339,16 @@ export default {
     font-weight: bolder;
     word-wrap: break-word;
     padding: 3px;
-    font-size: 17px;
-    border-radius: 12px;
-    -webkit-box-shadow: 0px 0px 22px 5px rgba(9, 153, 255, 0.23);
-    -moz-box-shadow:    0px 0px 22px 5px rgba(9, 153, 255, 0.23);
-    box-shadow:  0px 0px 22px 5px rgba(9, 153, 255, 0.23);
+    font-size: 14px;
+    border-radius: 32px;
+    -webkit-box-shadow: 0px 0px 52px 5px rgba(9, 153, 255, 0.11);
+    -moz-box-shadow:    0px 0px 52px 5px rgba(9, 153, 255, 0.11);
+    box-shadow:  0px 0px 52px 5px rgba(9, 153, 255, 0.11);
     color: rgb(40, 191, 255);
 }
         .list-notes-column{
-                height: 300px;
+
+                height: 45%;
                 width: 100%;
                 overflow-y: hidden;
                 -webkit-box-shadow: inset 0px 0px 11px 5px rgb(17, 41, 54, .39);
@@ -377,7 +383,7 @@ export default {
     letter-spacing: 5px;
     width: 80%;
     font-size: 19px;
-    padding: 15px;
+    padding: 12px;
     color: #fff;
     -webkit-text-stroke-width: .04rem;
     -webkit-text-stroke-color: rgba(47, 47, 47, 0.33);
@@ -389,13 +395,14 @@ export default {
 }
 /* Time Div */
 .time-div-green{
-   margin: 15px;
+   margin: 10px;
    word-wrap: break-word;
-   padding: 15px;
+   padding: 7px;
+   width: 87%;
    border-radius: 35px;
    border-style: none;
-   background-color: rgba(6, 183, 0, 0.3);
-   box-shadow: inset 0px 0px 9px 1px rgba(17, 87, 90, 0.9);
+   background-color: rgba(6, 183, 0, 0.2);
+   box-shadow: inset 0px 0px 9px 1px rgba(9, 43, 44, 0.50);
 }
 .store-time{
     font-family: Mont2;
@@ -407,10 +414,27 @@ export default {
     letter-spacing: 1.7px;
 }
 .time-div-yellow{
-     background-color: rgba(133, 148, 1, 0.45);
+    margin: 10px;
+   word-wrap: break-word;
+   padding: 7px;
+   width: 87%;
+   border-radius: 35px;
+   border-style: none;
+   background-color: rgba(133, 148, 1, 0.2);
+   box-shadow: inset 0px 0px 9px 1px rgba(12, 22, 22, 0.47);
+
 }
 .time-div-red{
-    background-color: rgba(148, 1, 1, 0.45);
+   margin: 10px;
+   word-wrap: break-word;
+   padding: 7px;
+   width: 87%;
+   border-radius: 35px;
+   border-style: none;
+   background-color: rgba(148, 1, 1, 0.3);
+   box-shadow: inset 0px 0px 9px 1px rgba(12, 22, 22, 0.57);
+
+
 }
 .list-marker-row{
         width: 100%;
@@ -438,6 +462,9 @@ export default {
         padding-left: 10px;
         padding-right: 10px;
     }
+    .store-list-inner-div{
+        width: 90%;
+    }
 
     
 }
@@ -448,6 +475,7 @@ export default {
 
  /* icon imports */
     .bluePin{
+        filter: opacity(.95);
         background-image: url('../assets/map-icons/blue-pin.png');
         height: 79px;
         width: 79px;
@@ -463,6 +491,7 @@ export default {
         background-color: rgba(9, 41, 61, 0.25);
     }
     .greenPin{
+        filter: opacity(.95);
         background-image: url('../assets/map-icons/green-pin.png');
         height: 79px;
         width: 79px;
@@ -478,6 +507,7 @@ export default {
         background-color: rgba(9, 41, 61, 0.25);
     }
     .greyPin{
+        filter: opacity(.95);
         background-image: url('../assets/map-icons/grey-pin.png');
         height: 79px;
         width: 79px;
@@ -493,6 +523,7 @@ export default {
         background-color: rgba(9, 41, 61, 0.25);
     }
     .orangePin{
+        filter: opacity(.95);
         background-image: url('../assets/map-icons/orange-pin.png');
         height: 79px;
         width: 79px;
@@ -508,6 +539,7 @@ export default {
         background-color: rgba(9, 41, 61, 0.25);
     }
     .purplePin{
+        filter: opacity(.95);
         background-image: url('../assets/map-icons/purple-pin.png');
         height: 79px;
         width: 79px;
@@ -523,6 +555,7 @@ export default {
         background-color: rgba(9, 41, 61, 0.25);
     }
     .redPin{
+        filter: opacity(.95);
         background-image: url('../assets/map-icons/red-pin.png');
        height: 79px;
         width: 79px;
@@ -538,6 +571,7 @@ export default {
         background-color: rgba(9, 41, 61, 0.25);
     }
     .yellowPin{
+        filter: opacity(.95);
         background-image: url('../assets/map-icons/yellow-pin.png');
         height: 79px;
         width: 79px;
