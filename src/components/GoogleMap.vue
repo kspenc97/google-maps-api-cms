@@ -300,6 +300,7 @@ export default {
                 visitDate: '',
                 visitProfit: 0,
                 visitId: visitId,
+                visitTime: currentTime,
               }
             ],
             storeNotes: [
@@ -308,12 +309,14 @@ export default {
                 noteMiddle: 'testMiddle1',
                 noteRight: 'testRight1',
                 noteId: note1Id,
+                noteTime: currentTime,
               },
               {
                 noteLeft: 'testLeft2',
                 noteMiddle: 'testMiddle2',
                 noteRight: 'testRight2',
                 noteId: note2Id,
+                noteTime: currentTime,
               },
               ],
             position: {lat: e.latLng.lat(), lng: e.latLng.lng()},

@@ -121,6 +121,8 @@
                         <option value="DISPLAY_RANGE">Range</option>
                         <option value="DISPLAY_MAX">Max</option>
                         <option value="DISPLAY_MIN">Min</option>
+                        <option value="NEWEST_FIRST">List Newest First</option>
+                        <option value="OLDEST_FIRST">List Oldest First</option>
                     </select>
                    <p class="edit-window-profit-metric">{{this.profitMetric}}</p>
                    <button class='add-profit-btn' @click.prevent="profitAdd">Add Profit</button>
@@ -180,6 +182,8 @@
                         <option value="DISPLAY_RANGE">Range</option>
                         <option value="DISPLAY_MAX">Max</option>
                         <option value="DISPLAY_MIN">Min</option>
+                        <option value="NEWEST_FIRST">List Newest First</option>
+                        <option value="OLDEST_FIRST">List Oldest First</option>
                     </select>
                    <p class='edit-window-profit-metric'>{{this.profitMetric}}</p>
                    <button class='add-profit-btn' @click.prevent="profitAdd">Add Profit</button>
@@ -333,6 +337,8 @@
                         <option value="DISPLAY_RANGE">Range</option>
                         <option value="DISPLAY_MAX">Max</option>
                         <option value="DISPLAY_MIN">Min</option>
+                        <option value="NEWEST_FIRST">List Newest First</option>
+                        <option value="OLDEST_FIRST">List Oldest First</option>
                     </select>
               </div>
               <div class='edit-window-only-profit-rows' >
@@ -404,6 +410,8 @@
                         <option value="DISPLAY_RANGE">Range</option>
                         <option value="DISPLAY_MAX">Max</option>
                         <option value="DISPLAY_MIN">Min</option>
+                        <option value="NEWEST_FIRST">List Newest First</option>
+                        <option value="OLDEST_FIRST">List Oldest First</option>
                     </select>
               </div>
               <div class='edit-window-only-profit-rows' >
@@ -489,6 +497,8 @@ export default {
           profitChoppingBlock: '',
           addressChoppingBlock: '',
           profitMetric: '',
+          noteSortOrder: 'NEWEST_FIRST',
+          profitSortOrder: 'NEWEST_FIRST',
           displayedProfitMetric: 'DISPLAY_AVERAGE',
           phoneProfitColumn: 'edit-window-profits-column-phone',
           phoneNoteColumn: 'edit-window-notes-column-phone'
@@ -587,6 +597,14 @@ export default {
           case 'DISPLAY_MIN':
             this.profitMetric = profitData.profitMin;
           break;
+          case 'NEWEST_FIRST':
+            this.profitSortOrder = 'NEWEST_FIRST';
+            this.profitOrderRefresh();
+          break;
+          case 'OLDEST_FIRST':
+            this.profitSortOrder = 'OLDEST_FIRST';
+            this.profitOrderRefresh();
+          break;
         }
     },
     profitRefresh(){
@@ -609,6 +627,78 @@ export default {
           break;
         }
   
+    },
+    notesChange(event){
+    let noteCalc= event.target.value;
+        switch(noteCalc){
+          case 'NEWEST_FIRST':
+            this.noteSortOrder = 'NEWEST_FIRST';
+            this.notesRefresh();
+          break;
+          case 'OLDEST_FIRST':
+            this.noteSortOrder = 'OLDEST_FIRST';
+            this.notesRefresh();
+          break;
+          
+        }
+    },
+    notesRefresh(){
+        let noteCalc = this.noteSortOrder;
+        switch(noteCalc){
+          case 'NEWEST_FIRST':
+            this.selectedStore.storeNotes = this.selectedStore.storeNotes.sort(function(a, b) {
+                    if(a.noteTime > b.noteTime){
+                        return -1;
+                    }else if(a.noteTime < b.noteTime){
+                      return 1;
+                    } else{
+                        return 0
+                    }
+
+                });
+          break;
+          case 'OLDEST_FIRST':
+            this.selectedStore.storeNotes = this.selectedStore.storeNotes.sort(function(a, b) {
+                    if(a.noteTime > b.noteTime){
+                        return 1;
+                    } else if(a.noteTime < b.noteTime){
+                      return -1;
+                    }else{
+                        return 0
+                    }             
+
+                    });
+          break;
+        }
+    },
+    profitOrderRefresh(){
+        let profitCalc = this.profitSortOrder;
+        switch(profitCalc){
+          case 'NEWEST_FIRST':
+            this.selectedStore.profitList = this.selectedStore.profitList.sort(function(a, b) {
+                    if(a.visitTime > b.visitTime){
+                        return -1;
+                    }else if(a.visitTime < b.visitTime){
+                      return 1;
+                    } else{
+                        return 0
+                    }
+
+                });
+          break;
+          case 'OLDEST_FIRST':
+            this.selectedStore.profitList = this.selectedStore.profitList.sort(function(a, b) {
+                    if(a.visitTime > b.visitTime){
+                        return 1;
+                    }else if(a.visitTime < b.visitTime){
+                      return -1;
+                    } else{
+                        return 0
+                    }
+
+                });
+          break;
+        }
     },
     selectChange(event){
             this.selectedStore.markerColor = event.target.value;
@@ -754,21 +844,25 @@ export default {
     },
     noteAdd(){
             let newNoteId = uuidv4();
+            let currentTime = Date.now();
             let newNote = {
                 noteLeft: '',
                 noteMiddle: '',
                 noteRight: '',
                 noteId: newNoteId,
+                noteTime: currentTime,
               }
             this.selectedStore.storeNotes.unshift(newNote);
             this.$_updateStore(this.selectedStore);
         },
     profitAdd(){
             let newProfitId = uuidv4();
+            let currentTime = Date.now();
             let newProfit = {
                 visitDate: '',
                 visitProfit: 0,
                 visitId: newProfitId,
+                visitTime: currentTime,
               }
             this.selectedStore.profitList.unshift(newProfit);
             this.$_updateStore(this.selectedStore);
@@ -797,6 +891,7 @@ export default {
         this.profitRefresh();
         this.refreshClock();
         this.loadPinImg();
+        this.notesRefresh();
         });
         
     },
@@ -822,7 +917,7 @@ export default {
         left: 0;
         right: 0;
         bottom: 0;
-        transform: translateY(48%) scale(1.004) translateX(-.5%);
+        transform: translateY(48%) scaleY(1.1) scaleX(1.004) translateX(-.5%);
         position: static;
         flex-direction: column;
         align-items: center;
