@@ -22,7 +22,7 @@
         <label  for="store-name"></label><p class="store-name-label">{{selectedStore.storeName}}</p>
         </div> 
         <div>
-        <label  for="store-address"></label><p class="store-address-label">{{selectedStore.storeAddress}}</p>
+        <label  for="store-address"></label><p @click='openModalAddressLaunch' class="store-address-label">{{selectedStore.storeAddress}}</p>
          </div>
       </div>
       <div v-if='this.changeAddy === true' class='name-address-container'>
@@ -263,7 +263,7 @@
         <label for="store-name"></label><p class="store-name-label">{{selectedStore.storeName}}</p>
         </div> 
         <div>
-        <label for="store-address"></label><p class="store-address-label">{{selectedStore.storeAddress}}</p>
+        <label for="store-address"></label><p @click='openModalAddressLaunch' class="store-address-label">{{selectedStore.storeAddress}}</p>
          </div>
       </div>
       <div v-if='this.changeAddy === true' class='name-address-container'>
@@ -712,6 +712,11 @@ export default {
             this.showModal = true;
             this.modalVal = e.target.value;
     },
+    openModalAddressLaunch(){
+        this.modalVal = 'address_external_btn';
+        this.showModal = true;
+    },
+    
     openModalNoteDeletion(){
             this.showModal = true;
             this.modalVal = 'delete_note_btn';
@@ -746,12 +751,21 @@ export default {
                     this.profitRemoveFinalize();
                     this.showModal = false;
                 break;
+                case 'CONFIRM_LAUNCH_ADDRESS':
+                    this.launchExternalMap();
+                    this.showModal = false;
+                break;
             }
 
     },
     editAddress(){
         this.changeAddy = true;
     },
+    launchExternalMap(){
+        let latVal = this.selectedStore.position.lat;
+        let lonVal = this.selectedStore.position.lng;
+        window.location.href = `https://www.google.com/maps/search/?api=1&query=${latVal}%2C${lonVal}`;
+      },
     async doneChangingAddress(){
         let newAddressInfo = await this.getAddress();
         console.log(newAddressInfo)

@@ -42,6 +42,9 @@ export default {
                     case 'reset_timer_btn':
                       this.$emit('resFromModal', {modalAnswer: 'CONFIRM_RESET_TIMER'});
                     break;
+                    case 'address_external_btn':
+                      this.$emit('resFromModal', {modalAnswer: 'CONFIRM_LAUNCH_ADDRESS'});
+                    break;
               }
           },
       },
@@ -61,6 +64,9 @@ export default {
                 break;
                 case 'edit_address_btn':
                     this.modalQuestion = 'Are you sure you want to edit the address of this store?';
+                break;
+                case 'address_external_btn':
+                    this.modalQuestion = 'Are you sure you want to load this store\'s address in Google Maps?';
                 break;
           }
       },
