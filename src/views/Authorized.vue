@@ -120,6 +120,8 @@ methods:{
     loadEditTray(event){
       this.editSwitch = true;
       this.injectedId = event.idOfSelected;
+      //Switches back to map in order to hide the fact that I can't figure out how to get the list to stay loaded
+      this.viewSwitch();
     },
     async storeGet(){
       return await this.$_getStores();
