@@ -12,7 +12,7 @@
              <button @click='this.populateEditWindow' class='store-pin-edit' id='store-pin-edit'>Edit Store</button>
              <hr>
              <p>Notes</p>           
-              <div v-for="noteRow in this.selectedStore.storeNotes" :key="noteRow.noteId">
+              <div class='notes-area-pin-window' v-for="noteRow in this.selectedStore.storeNotes" :key="noteRow.noteId">
                 <div class='pin-window-note-row'>
                   <p>{{noteRow.noteLeft}}</p><p class="note-spacer"> | </p>
                   <p>{{noteRow.noteMiddle}}</p><p class="note-spacer"> | </p>
@@ -112,17 +112,53 @@ export default {
 .store-pin-title{
   font-family: Mont2;
   font-size: 15px;
-  color: rgb(0, 20, 50);
+  color: rgba(0, 20, 50, 0.9);
+  background-color: rgba(8, 127, 246, 0.1);
+  border-radius: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  box-shadow: inset 0px 0px 5px 1px rgba(5, 38, 40, 0.85); 
 }
 .store-address-link{
   font-family: Mont;
   text-decoration: underline;
   font-size: 15px;
   color: rgb(0, 123, 205);
+  background-color: rgba(8, 127, 246, 0.1);
+  border-radius: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  box-shadow: inset 0px 0px 5px 1px rgba(5, 38, 40, 0.85);
 }
 .store-address-link:hover{
   color: rgb(66, 170, 240);
   transform: scale(1.005);
+}
+.store-pin-edit{
+  background-color: rgba(8, 127, 246, 0.5);
+  font-size: 21px;
+  border-style: none;
+  background-color: rgba(8, 127, 246, 0.3);
+  border-radius: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  box-shadow: inset 0px 0px 7px 1px rgba(5, 38, 40, 0.85);
+}
+.store-pin-edit:hover{
+    background-color: rgba(0, 88, 133, 0.5);
+    box-shadow: inset 0px 0px 3px 1px rgba(5, 38, 40, 0.85);
+}
+.notes-area-pin-window{
+    border-radius: 1px;
+    font-family: Mont;
+    box-shadow: inset 0px 0px 7px 2px rgba(5, 38, 40, 0.9);
+    padding: 9px;
 }
 .note-spacer{
   padding-left: 10px;
@@ -130,26 +166,54 @@ export default {
 }
 /* Time Div */
         .pin-window-time-div-green{
+            font-family: Mont2;
+            font-size: 17px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin: 10px;
-            max-width: 700px;
+            color: rgba(17, 17, 17, 0.8);
+            margin: 15px;
             word-wrap: break-word;
-            font-size: 14px;
-            padding: 10px;
-            border: .5px solid;
-            border-radius: 35px;
-            /*  width: inherit; - not sure what this does */
-            color: #fff;
-            background-color: rgba(6, 148, 1, 0.45);
-            box-shadow: 1px 2px 5px 2px rgba(255, 255, 255, 0.4);
+            padding-left: 34px;
+            padding-right: 34px;
+            padding-top: 9px;
+            padding-bottom: 9px;
+            border-radius: 40px;
+            border-style: none;
+            background-color: rgba(7, 201, 0, 0.4);
+            box-shadow: inset 0px 0px 7px 2px rgba(5, 38, 40, 0.85);
         }
         .pin-window-time-div-yellow{
+            font-family: Mont2;
+            font-size: 17px;
+            display: flex;
+            flex-direction: column;
+            color: rgba(17, 17, 17, 0.8);
+            margin: 15px;
+            word-wrap: break-word;
+            padding-left: 34px;
+            padding-right: 34px;
+            padding-top: 9px;
+            padding-bottom: 9px;
+            border-radius: 40px;
+            border-style: none;
             background-color: rgba(133, 148, 1, 0.45);
+            box-shadow: inset 0px 0px 7px 2px rgba(5, 38, 40, 0.85);
         }
         .pin-window-time-div-red{
+          font-family: Mont2;
+            font-size: 17px;
+            display: flex;
+            flex-direction: column;
+            color: rgba(17, 17, 17, 0.8);
+            margin: 15px;
+            word-wrap: break-word;
+            padding-left: 34px;
+            padding-right: 34px;
+            padding-top: 9px;
+            padding-bottom: 9px;
+            border-radius: 40px;
+            border-style: none;
             background-color: rgba(148, 1, 1, 0.45);
+            box-shadow: inset 0px 0px 9px 2px rgba(5, 38, 40, 0.85);
         }
 </style>
