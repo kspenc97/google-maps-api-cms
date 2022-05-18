@@ -5,8 +5,8 @@
     />
     <div v-if="this.pin_mode_for_map === false">
       <GmapMap
-        :center="{lat:39.720043, lng:-104.991531}"
-        :zoom="10"
+        :center="{lat:40.7908, lng:-111.8910}"
+        :zoom="9"
         :key="this.pin_mode_for_map"
         map-type-id="terrain"
         @click="makeMarker"
@@ -48,8 +48,8 @@
 <div v-if="this.pin_mode_for_map === true">
 
     <GmapMap
-  :center="{lat:39.720043, lng:-104.991531}"
-  :zoom="10"
+  :center="{lat:40.7908, lng:-111.8910}"
+  :zoom="9"
   :key="this.pin_mode_for_map"
   map-type-id="terrain"
   @click="makeMarker"

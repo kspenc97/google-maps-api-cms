@@ -11,6 +11,7 @@
              <h1 :class="this.timeClass">{{this.daysAgo}}</h1>
              <button @click='this.populateEditWindow' class='store-pin-edit' id='store-pin-edit'>Edit Store</button>
              <hr>
+             <p>Average profit: {{this.returnProfitMetric(this.selectedStore)}}</p>           
              <p>Notes</p>           
               <div class='notes-area-pin-window' v-for="noteRow in this.selectedStore.storeNotes" :key="noteRow.noteId">
                 <div class='pin-window-note-row'>
@@ -59,6 +60,10 @@ export default {
       storesData: state => state.stores
     }),
  methods:{
+      returnProfitMetric(storeObj){
+                let profitData = this.$_genProfitData(storeObj);
+                return profitData.profitAverage;
+            },
       populateEditWindow(){
         this.$emit('loadEditTray', {idOfSelected: this.selectedStore.storeId});
       },
